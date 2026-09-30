@@ -153,6 +153,8 @@ for item in client.dataset(run2["defaultDatasetId"]).iterate_items():
 
 **DNS / timeout / SSL?** Recorded with `statusClass: "error"` and `errorClass` set; the run continues.
 
-## License & source
+## License & source code
 
-AGPL-3.0. See `LICENSE` and `CHANGELOG.md`.
+This Actor is open source under the **GNU Affero General Public License v3.0 (AGPL-3.0)** — see `LICENSE`. The full source code is public: https://github.com/xbox002000/url-status-checker
+
+See `CHANGELOG.md` for version history.
