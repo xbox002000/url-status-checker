@@ -1,138 +1,164 @@
 {
-    "title": "Bulk URL status checker input",
-    "description": "Paste URLs, load a remote list, or point at another Actor's dataset / key-value record (compatible with Sitemap URL Extractor dataset rows and DOC_TO_MARKDOWN_INPUT). Each URL is checked with HEAD, falling back to GET when HEAD is blocked.",
-    "type": "object",
-    "schemaVersion": 1,
-    "properties": {
-        "urls": {
-            "title": "URLs to check",
-            "type": "array",
-            "description": "One or more URLs. Accepts `{\"url\": \"...\"}` objects (same shape as Sitemap Actor dataset rows and DOC_TO_MARKDOWN_INPUT). You can also paste plain URL strings or use a remote text list (`requestsFromUrl`).",
-            "editor": "requestListSources",
-            "prefill": [
-                { "url": "https://example.com/" },
-                { "url": "https://httpbin.org/status/404" }
-            ],
-            "sectionCaption": "Input"
+  "title": "Bulk URL status checker input",
+  "description": "Paste URLs, load a remote list, or point at another Actor's dataset / key-value record (compatible with Sitemap URL Extractor dataset rows and DOC_TO_MARKDOWN_INPUT). Each URL is checked with HEAD, falling back to GET when HEAD is blocked.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "urls": {
+      "title": "URLs to check",
+      "type": "array",
+      "description": "One or more URLs. Accepts `{\"url\": \"...\"}` objects (same shape as Sitemap Actor dataset rows and DOC_TO_MARKDOWN_INPUT). You can also paste plain URL strings or use a remote text list (`requestsFromUrl`).",
+      "editor": "requestListSources",
+      "prefill": [
+        {
+          "url": "https://example.com/"
         },
-        "datasetId": {
-            "title": "Source dataset ID",
-            "type": "string",
-            "description": "Optional. Apify dataset ID from another Actor run (e.g. Sitemap URL Extractor). Reads the `url` field from each item. Combined with `urls` if both are set.",
-            "editor": "textfield",
-            "sectionCaption": "Chain from another Actor"
-        },
-        "keyValueStoreId": {
-            "title": "Source key-value store ID",
-            "type": "string",
-            "description": "Optional. Apify key-value store ID. Used with Record key below to load a JSON list such as DOC_TO_MARKDOWN_INPUT (`{\"urls\":[{\"url\":...}]}`) or a plain URL array.",
-            "editor": "textfield"
-        },
-        "keyValueRecordKey": {
-            "title": "Record key",
-            "type": "string",
-            "description": "Key inside the source key-value store (e.g. `DOC_TO_MARKDOWN_INPUT`). Ignored unless a store ID is set.",
-            "editor": "textfield",
-            "default": "DOC_TO_MARKDOWN_INPUT"
-        },
-        "maxUrls": {
-            "title": "Max URLs",
-            "type": "integer",
-            "description": "Stop after checking this many unique URLs (0 = no limit). Also caps cost.",
-            "default": 1000,
-            "prefill": 100,
-            "minimum": 0,
-            "maximum": 1000000,
-            "sectionCaption": "Limits"
-        },
-        "outputFilter": {
-            "title": "Dataset filter",
-            "type": "string",
-            "description": "Which checked URLs to save in the dataset. SUMMARY always includes counts for every URL checked. `all` = every URL; `broken` = not OK (4xx/5xx/network error); `redirects_and_errors` = 3xx + broken; `3xx` / `4xx` / `5xx` = that status class only; `errors_only` = network/DNS/timeout/SSL (no HTTP status).",
-            "editor": "select",
-            "enum": ["all", "broken", "redirects_and_errors", "3xx", "4xx", "5xx", "errors_only"],
-            "enumTitles": [
-                "All checked URLs",
-                "Broken only (4xx / 5xx / network error)",
-                "Redirects + broken (3xx / 4xx / 5xx / error)",
-                "3xx redirects only",
-                "4xx only",
-                "5xx only",
-                "Network / DNS / timeout / SSL errors only"
-            ],
-            "default": "all",
-            "sectionCaption": "Output"
-        },
-        "httpMethod": {
-            "title": "HTTP method",
-            "type": "string",
-            "description": "`head_then_get` (default): try HEAD, fall back to a streamed GET when the server returns 403/405/501 or an empty response. `head`: HEAD only. `get`: GET only (headers; body is not stored).",
-            "editor": "select",
-            "enum": ["head_then_get", "head", "get"],
-            "enumTitles": ["HEAD, then GET fallback", "HEAD only", "GET only"],
-            "default": "head_then_get",
-            "sectionCaption": "Request behaviour"
-        },
-        "followRedirects": {
-            "title": "Follow redirects",
-            "type": "boolean",
-            "description": "Follow HTTP redirects and record the final URL. When off, the first response status is kept (often 3xx).",
-            "default": true
-        },
-        "maxConcurrency": {
-            "title": "Max concurrency",
-            "type": "integer",
-            "description": "Parallel requests overall.",
-            "default": 8,
-            "minimum": 1,
-            "maximum": 50,
-            "sectionCaption": "Politeness & robustness"
-        },
-        "maxConcurrencyPerHost": {
-            "title": "Max concurrency per host",
-            "type": "integer",
-            "description": "Parallel requests to any single host (kept low to be polite).",
-            "default": 2,
-            "minimum": 1,
-            "maximum": 10
-        },
-        "minDelayMsPerHost": {
-            "title": "Min delay per host (ms)",
-            "type": "integer",
-            "description": "Minimum milliseconds between starting requests to the same host (simple rate limit). 0 = no extra delay.",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 10000
-        },
-        "requestTimeoutSecs": {
-            "title": "Request timeout (seconds)",
-            "type": "integer",
-            "description": "Timeout for each HTTP request (connect + read).",
-            "default": 20,
-            "minimum": 5,
-            "maximum": 120
-        },
-        "maxRetries": {
-            "title": "Max retries",
-            "type": "integer",
-            "description": "Retries for timeouts, network blips, HTTP 429 and selected 5xx (exponential backoff, honours Retry-After up to 30 s). DNS and certificate failures are not retried.",
-            "default": 2,
-            "minimum": 0,
-            "maximum": 8
-        },
-        "userAgent": {
-            "title": "User-Agent",
-            "type": "string",
-            "description": "Optional custom User-Agent header.",
-            "editor": "textfield"
-        },
-        "proxyConfiguration": {
-            "title": "Proxy",
-            "type": "object",
-            "description": "Optional. Use a proxy if a site blocks data-center IPs. Not needed for most public sites.",
-            "editor": "proxy",
-            "prefill": { "useApifyProxy": false },
-            "default": { "useApifyProxy": false }
+        {
+          "url": "https://httpbin.org/status/404"
         }
+      ],
+      "sectionCaption": "Input"
+    },
+    "datasetId": {
+      "title": "Source dataset ID",
+      "type": "string",
+      "description": "Optional. Apify dataset ID from another Actor run (e.g. Sitemap URL Extractor). Reads the `url` field from each item. Combined with `urls` if both are set.",
+      "editor": "textfield",
+      "sectionCaption": "Chain from another Actor"
+    },
+    "keyValueStoreId": {
+      "title": "Source key-value store ID",
+      "type": "string",
+      "description": "Optional. Apify key-value store ID. Used with Record key below to load a JSON list such as DOC_TO_MARKDOWN_INPUT (`{\"urls\":[{\"url\":...}]}`) or a plain URL array.",
+      "editor": "textfield"
+    },
+    "keyValueRecordKey": {
+      "title": "Record key",
+      "type": "string",
+      "description": "Key inside the source key-value store (e.g. `DOC_TO_MARKDOWN_INPUT`). Ignored unless a store ID is set.",
+      "editor": "textfield",
+      "default": "DOC_TO_MARKDOWN_INPUT"
+    },
+    "maxUrls": {
+      "title": "Max URLs",
+      "type": "integer",
+      "description": "Stop after checking this many unique URLs (0 = no limit). Also caps cost.",
+      "default": 1000,
+      "prefill": 100,
+      "minimum": 0,
+      "maximum": 1000000,
+      "sectionCaption": "Limits"
+    },
+    "outputFilter": {
+      "title": "Dataset filter",
+      "type": "string",
+      "description": "Which checked URLs to save in the dataset. SUMMARY always includes counts for every URL checked. `all` = every URL; `broken` = not OK (4xx/5xx/network error); `redirects_and_errors` = 3xx + broken; `3xx` / `4xx` / `5xx` = that status class only; `errors_only` = network/DNS/timeout/SSL (no HTTP status).",
+      "editor": "select",
+      "enum": [
+        "all",
+        "broken",
+        "redirects_and_errors",
+        "3xx",
+        "4xx",
+        "5xx",
+        "errors_only"
+      ],
+      "enumTitles": [
+        "All checked URLs",
+        "Broken only (4xx / 5xx / network error)",
+        "Redirects + broken (3xx / 4xx / 5xx / error)",
+        "3xx redirects only",
+        "4xx only",
+        "5xx only",
+        "Network / DNS / timeout / SSL errors only"
+      ],
+      "default": "all",
+      "sectionCaption": "Output",
+      "prefill": "all"
+    },
+    "httpMethod": {
+      "title": "HTTP method",
+      "type": "string",
+      "description": "`head_then_get` (default): try HEAD, fall back to a streamed GET when the server returns 403/405/501 or an empty response. `head`: HEAD only. `get`: GET only (headers; body is not stored).",
+      "editor": "select",
+      "enum": [
+        "head_then_get",
+        "head",
+        "get"
+      ],
+      "enumTitles": [
+        "HEAD, then GET fallback",
+        "HEAD only",
+        "GET only"
+      ],
+      "default": "head_then_get",
+      "sectionCaption": "Request behaviour",
+      "prefill": "head_then_get"
+    },
+    "followRedirects": {
+      "title": "Follow redirects",
+      "type": "boolean",
+      "description": "Follow HTTP redirects and record the final URL. When off, the first response status is kept (often 3xx).",
+      "default": true
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "description": "Parallel requests overall.",
+      "default": 8,
+      "minimum": 1,
+      "maximum": 50,
+      "sectionCaption": "Politeness & robustness"
+    },
+    "maxConcurrencyPerHost": {
+      "title": "Max concurrency per host",
+      "type": "integer",
+      "description": "Parallel requests to any single host (kept low to be polite).",
+      "default": 2,
+      "minimum": 1,
+      "maximum": 10
+    },
+    "minDelayMsPerHost": {
+      "title": "Min delay per host (ms)",
+      "type": "integer",
+      "description": "Minimum milliseconds between starting requests to the same host (simple rate limit). 0 = no extra delay.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "requestTimeoutSecs": {
+      "title": "Request timeout (seconds)",
+      "type": "integer",
+      "description": "Timeout for each HTTP request (connect + read).",
+      "default": 20,
+      "minimum": 5,
+      "maximum": 120
+    },
+    "maxRetries": {
+      "title": "Max retries",
+      "type": "integer",
+      "description": "Retries for timeouts, network blips, HTTP 429 and selected 5xx (exponential backoff, honours Retry-After up to 30 s). DNS and certificate failures are not retried.",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 8
+    },
+    "userAgent": {
+      "title": "User-Agent",
+      "type": "string",
+      "description": "Optional custom User-Agent header.",
+      "editor": "textfield"
+    },
+    "proxyConfiguration": {
+      "title": "Proxy",
+      "type": "object",
+      "description": "Optional. Use a proxy if a site blocks data-center IPs. Not needed for most public sites.",
+      "editor": "proxy",
+      "prefill": {
+        "useApifyProxy": false
+      },
+      "default": {
+        "useApifyProxy": false
+      }
     }
+  }
 }

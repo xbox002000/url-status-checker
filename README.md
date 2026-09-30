@@ -1,4 +1,4 @@
-# Bulk URL Status Checker — Broken Links & Redirects
+# Bulk URL Status Checker — 404s & Redirects
 
 **Check a list of URLs for HTTP status, redirects, content-type and failure class — then get a SUMMARY of what is broken.**
 Paste URLs, point at another Actor's dataset, or load a `DOC_TO_MARKDOWN_INPUT`-style key-value record (for example from the Sitemap URL Extractor). Each URL is probed with HEAD, falling back to GET when the server blocks HEAD. Default memory: 256 MB. No browser, no AI keys.
@@ -122,13 +122,13 @@ from apify_client import ApifyClient
 client = ApifyClient("<YOUR_APIFY_TOKEN>")
 
 # 1) discover URLs
-run = client.actor("YOUR_USERNAME/sitemap-url-discovery").call(run_input={
+run = client.actor("ingenious_quip_bxq/sitemap-url-discovery").call(run_input={
     "startUrls": [{"url": "https://www.example.com"}],
     "maxUrls": 100,
 })
 
 # 2) check their HTTP status (broken only in the dataset)
-run2 = client.actor("YOUR_USERNAME/url-status-checker").call(run_input={
+run2 = client.actor("ingenious_quip_bxq/url-status-checker").call(run_input={
     "datasetId": run["defaultDatasetId"],
     "outputFilter": "broken",
     "maxUrls": 100,
@@ -152,6 +152,12 @@ for item in client.dataset(run2["defaultDatasetId"]).iterate_items():
 **Are redirects “broken”?** No. With the default filter they are saved as `statusClass: "3xx"` (or as the final 2xx if redirects are followed). Use filter `redirects_and_errors` or `3xx` if you only want those rows.
 
 **DNS / timeout / SSL?** Recorded with `statusClass: "error"` and `errorClass` set; the run continues.
+
+## Related Actors / See also
+
+- [Sitemap URL Extractor — PDF/DOCX Tags + robots.txt](https://apify.com/ingenious_quip_bxq/sitemap-url-discovery) — typical upstream; pass `datasetId` or `DOC_TO_MARKDOWN_INPUT` (see **Chaining**).
+- [PDF & DOCX to Markdown — Table Extraction & RAG Chunks](https://apify.com/ingenious_quip_bxq/pdf-docx-to-markdown) — after confirming document URLs are live.
+- [Bulk WHOIS DNS SSL Lookup — Domain Enrichment](https://apify.com/ingenious_quip_bxq/whois-dns-ssl-lookup) — when failures are `dns` / `ssl`, enrich the host.
 
 ## License & source code
 

@@ -1,28 +1,28 @@
 {
-    "actorSpecification": 1,
-    "name": "url-status-checker",
-    "title": "Bulk URL Status Checker \u2014 Broken Links & Redirects",
-    "description": "Check HTTP status for a URL list: HEAD then GET fallback, redirect final URL, content-type, timing, and error class (dns/timeout/ssl/http). Chain from sitemap Actor output. Broken links reported, not fatal. 256 MB default.",
-    "version": "0.1",
-    "buildTag": "latest",
-    "minMemoryMbytes": 128,
-    "maxMemoryMbytes": 1024,
-    "defaultRunOptions": {
-        "build": "latest",
-        "memoryMbytes": 256,
-        "timeoutSecs": 3600
-    },
-    "input": "./input_schema.json",
-    "output": "./output_schema.json",
-    "storages": {
-        "dataset": "./dataset_schema.json"
-    },
-    "dockerfile": "../Dockerfile",
-    "readme": "../README.md",
-    "changelog": "../CHANGELOG.md",
-    "categories": [
-        "SEO_TOOLS",
-        "DEVELOPER_TOOLS",
-        "AUTOMATION"
-    ]
+  "actorSpecification": 1,
+  "name": "url-status-checker",
+  "title": "Bulk URL Status Checker \u2014 404s & Redirects",
+  "description": "Bulk-check HTTP status with HEAD\u2192GET fallback, final URL, timing, and error class \u2014 chain from Sitemap Actor output. Error class dns/timeout/ssl/http; accept URL list, sitemap datasetId, or DOC_TO_MARKDOWN_INPUT.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "minMemoryMbytes": 128,
+  "maxMemoryMbytes": 1024,
+  "defaultRunOptions": {
+    "build": "latest",
+    "memoryMbytes": 256,
+    "timeoutSecs": 3600
+  },
+  "input": "./input_schema.json",
+  "output": "./output_schema.json",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "changelog": "../CHANGELOG.md",
+  "categories": [
+    "SEO_TOOLS",
+    "DEVELOPER_TOOLS",
+    "AUTOMATION"
+  ]
 }
