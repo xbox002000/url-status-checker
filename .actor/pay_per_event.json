@@ -1,0 +1,13 @@
+{
+    "apify-actor-start": {
+        "eventTitle": "Actor start",
+        "eventDescription": "Apify synthetic event, charged automatically once per GB of run memory (1 GB minimum). Kept at Apify's default price.",
+        "eventPriceUsd": 5e-05
+    },
+    "url-checked": {
+        "eventTitle": "URL checked",
+        "eventDescription": "Charged once per URL that was HTTP-checked and recorded as a result row (including 3xx/4xx/5xx and network errors). Also charged when a checked URL is filtered out of the dataset — the check still ran. Invalid inputs that never become a checked row are not charged.",
+        "eventPriceUsd": 0.0003,
+        "isPrimaryEvent": true
+    }
+}

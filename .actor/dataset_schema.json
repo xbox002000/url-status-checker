@@ -1,0 +1,47 @@
+{
+    "actorSpecification": 1,
+    "fields": {},
+    "views": {
+        "overview": {
+            "title": "All checked URLs",
+            "transformation": {
+                "fields": ["url", "httpStatus", "statusClass", "ok", "finalUrl", "contentType", "durationMs", "errorClass", "error"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "url": { "label": "URL", "format": "link" },
+                    "httpStatus": { "label": "HTTP", "format": "number" },
+                    "statusClass": { "label": "Class", "format": "text" },
+                    "ok": { "label": "OK", "format": "boolean" },
+                    "finalUrl": { "label": "Final URL", "format": "link" },
+                    "contentType": { "label": "Content-Type", "format": "text" },
+                    "durationMs": { "label": "ms", "format": "number" },
+                    "errorClass": { "label": "Error class", "format": "text" },
+                    "error": { "label": "Error", "format": "text" }
+                }
+            }
+        },
+        "broken": {
+            "title": "Status detail",
+            "transformation": {
+                "fields": ["url", "httpStatus", "statusClass", "errorClass", "finalUrl", "methodUsed", "redirectCount", "attempts", "error", "durationMs"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "url": { "label": "URL", "format": "link" },
+                    "httpStatus": { "label": "HTTP", "format": "number" },
+                    "statusClass": { "label": "Class", "format": "text" },
+                    "errorClass": { "label": "Error class", "format": "text" },
+                    "finalUrl": { "label": "Final URL", "format": "link" },
+                    "methodUsed": { "label": "Method", "format": "text" },
+                    "redirectCount": { "label": "Redirects", "format": "number" },
+                    "attempts": { "label": "Attempts", "format": "number" },
+                    "error": { "label": "Error", "format": "text" },
+                    "durationMs": { "label": "ms", "format": "number" }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Bulk URL Status Checker output",
+    "description": "One dataset item per checked URL that passes the output filter, plus SUMMARY and OUTPUT JSON records in the default key-value store with counts by status class.",
+    "properties": {
+        "results": {
+            "type": "string",
+            "title": "URL status results",
+            "description": "Default dataset items, one per checked URL (after optional filter): url, finalUrl, httpStatus, statusClass, ok, contentType, contentLength, durationMs, methodUsed, redirectCount, errorClass, error, attempts, host. Views: overview, broken.",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        },
+        "summary": {
+            "type": "string",
+            "title": "SUMMARY report",
+            "description": "Key-value store record SUMMARY (JSON): totalChecked, saved, counts by statusClass and errorClass, filter applied, durationSecs, peakMemoryMb.",
+            "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/SUMMARY"
+        },
+        "output": {
+            "type": "string",
+            "title": "Run summary (OUTPUT)",
+            "description": "Key-value store record OUTPUT (JSON): same run summary as SUMMARY plus charged event counts and input source notes. Kept for consistency with sibling Actors.",
+            "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+        }
+    }
+}

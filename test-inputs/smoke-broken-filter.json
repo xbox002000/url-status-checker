@@ -1,0 +1,11 @@
+{
+  "urls": [
+    { "url": "https://example.com/" },
+    { "url": "https://httpbingo.org/status/404" },
+    { "url": "https://this-host-does-not-exist-d046b.invalid/" }
+  ],
+  "maxUrls": 10,
+  "outputFilter": "broken",
+  "maxRetries": 0,
+  "requestTimeoutSecs": 12
+}

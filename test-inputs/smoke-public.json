@@ -1,0 +1,17 @@
+{
+  "urls": [
+    { "url": "https://example.com/" },
+    { "url": "https://httpbingo.org/status/200" },
+    { "url": "https://httpbingo.org/status/404" },
+    { "url": "https://httpbingo.org/redirect/2" },
+    { "url": "https://this-host-does-not-exist-d046b.invalid/" }
+  ],
+  "maxUrls": 10,
+  "maxConcurrency": 4,
+  "maxConcurrencyPerHost": 2,
+  "requestTimeoutSecs": 15,
+  "maxRetries": 1,
+  "httpMethod": "head_then_get",
+  "outputFilter": "all",
+  "followRedirects": true
+}
